@@ -20,7 +20,7 @@ Este proyecto utiliza `uv` para la gestión ultrarrápida de dependencias y ento
 2. **Clonar el repositorio:**
 
     ```bash
-    git clone [https://github.com/VexxAl/optimization-inspection-routes.git](https://github.com/VexxAl/optimization-inspection-routes.git)
+    git clone https://github.com/VexxAl/optimization-inspection-routes.git
     cd optimization-inspection-routes
     ```
 
