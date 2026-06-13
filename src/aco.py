@@ -39,6 +39,7 @@ class ACO_CARP:
         self.mejor_ruta_global = []
         self.mejor_z_global = float('inf')
         self.mejor_cobertura_global = 0
+        self.mejor_bateria_consumida_global = 0
 
 
     def obtener_costo_arco(self, u, v, arcos_visitados):
@@ -149,7 +150,7 @@ class ACO_CARP:
             z_fitness = bateria_consumida / cobertura 
 
 
-        return ruta, z_fitness, cobertura
+        return ruta, z_fitness, cobertura, bateria_consumida
 
 
     def actualizar_feromonas(self, mejor_ruta_iter, mejor_z_iter):
@@ -176,29 +177,35 @@ class ACO_CARP:
         print(f"--- Iniciando ACO ---")
         print(f"Población: {self.n_hormigas} hormigas | Iteraciones: {self.max_iter}")
         print(f"Batería Máxima: {self.bateria_max} | Factor de Castigo: {self.omega}\n")
+
+        historial_z = []
         
         for iteracion in range(self.max_iter):            
             mejor_ruta_iter = []
             mejor_z_iter = float('inf')
             mejor_cobertura_iter = 0
-            
+            mejor_bateria_consumida_iter = 0            
             
             for _ in range(self.n_hormigas):
                 # empezamos en el Nodo 0 (podemos variar esto en los experimentos para generar diversidad)
-                ruta, z_fitness, cobertura = self.simular_hormiga(nodo_inicio=0)
+                ruta, z_fitness, cobertura, bateria_consumida = self.simular_hormiga(nodo_inicio=0)
                 
                 if z_fitness < mejor_z_iter:
                     mejor_z_iter = z_fitness
                     mejor_ruta_iter = ruta
                     mejor_cobertura_iter = cobertura
+                    mejor_bateria_consumida_iter = bateria_consumida
                     
             if mejor_z_iter < self.mejor_z_global:
                 self.mejor_z_global = mejor_z_iter
                 self.mejor_ruta_global = mejor_ruta_iter
                 self.mejor_cobertura_global = mejor_cobertura_iter
-                print(f"Iteración {iteracion+1} -> Nuevo Óptimo | Z: {self.mejor_z_global:.2f} | Cobertura: {self.mejor_cobertura_global} tramos")
+                self.mejor_bateria_consumida_global = mejor_bateria_consumida_iter
+
+                print(f"Iteración {iteracion+1} -> Nuevo Óptimo | Z: {self.mejor_z_global:.2f} | Cobertura: {self.mejor_cobertura_global} tramos | Batería consumida: {self.mejor_bateria_consumida_global:.2f}")
                 
             self.actualizar_feromonas(mejor_ruta_iter, mejor_z_iter)
+            historial_z.append(self.mejor_z_global)
         
 
         print("\n--- Resultados Finales ---")
@@ -206,7 +213,7 @@ class ACO_CARP:
         print(f"Tramos únicos inspeccionados: {self.mejor_cobertura_global} / {self.red.grafo.number_of_edges() // 2}")
         print(f"Ruta propuesta:\n{self.mejor_ruta_global}")
         
-        return self.mejor_ruta_global
+        return self.mejor_ruta_global, historial_z
 
 # ---
 
@@ -220,10 +227,10 @@ if __name__ == "__main__":
     # (Ej: 3000 unidades permite ~10-15 arcos dependiendo del color)
     aco = ACO_CARP(
         red=red_tuberias, 
-        n_hormigas=100,      
+        n_hormigas=20,      
         max_iter=1000,        
         bateria_max=3000.0,
         omega=1000.0
     ) # el mejor fitness para esta configuración debería ser 3000/40 = 75 (ya que hay 40 arcos únicos en la red de prueba)
     
-    mejor_ruta = aco.run()
+    mejor_ruta, historial = aco.run()
