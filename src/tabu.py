@@ -44,6 +44,36 @@ class TabuSearch_CARP:
                 arcos_inspeccionados.add(tuberia)
                 
         return bateria_total, bateria_deadheading, arcos_inspeccionados
+
+
+    def _precalcular_estados(self, ruta):
+        """
+        Recorre la ruta una sola vez y cachea el estado físico.
+        Retorna dos listas donde el índice 'i' contiene el estado exacto al alcanzar el nodo 'ruta[i]'.
+        """
+        
+        bat_acumulada = 0.0
+        arcos_acumulados = set()
+        
+        # estado inicial (antes de iniciar la ruta)
+        baterias_prefijo = [bat_acumulada]
+        arcos_prefijo = [arcos_acumulados.copy()]
+        
+        for j in range(len(ruta) - 1):
+            u = int(ruta[j])
+            v = int(ruta[j+1])
+            tuberia = tuple(sorted((u, v)))
+            
+            if tuberia in arcos_acumulados:
+                bat_acumulada += self.grafo.costos_deadheading[u, v]
+            else:
+                bat_acumulada += self.grafo.costos_inspeccion[u, v]
+                arcos_acumulados.add(tuberia)
+                
+            baterias_prefijo.append(bat_acumulada)
+            arcos_prefijo.append(arcos_acumulados.copy()) # Snapshot aislado
+            
+        return baterias_prefijo, arcos_prefijo
     
 
     def _visibilidad(self, u, v, arcos_inspeccionados):
@@ -56,15 +86,17 @@ class TabuSearch_CARP:
             return 1.0 / (costo * self.omega)
         return 1.0 / costo
 
+
     def _calcular_fitness(self, arcos):
         """
         Función objetivo que minimiza el consumo de batería por tramo inspeccionado.
         """
 
         cobertura = len(arcos)
-        fitness = float('inf') if cobertura == 0 else self.bateria_max / cobertura
+        fitness = np.inf if cobertura == 0 else self.bateria_max / cobertura
 
         return fitness
+
 
     def _construir_ruta(self, nodo_inicio, bateria_restante, arcos_inspeccionados_base, iteracion_actual, nodo_previo=None):
         """
@@ -134,13 +166,14 @@ class TabuSearch_CARP:
         return ruta, arcos_inspeccionados, bateria_consumida
 
 
-    def _generar_vecino(self, ruta, iteracion):
+    def _generar_vecino(self, ruta, iteracion, baterias_prefijo, arcos_prefijo):
         """
         Operador de vecindad basado en pivote con reconstrucción y penalización Tabú.
         """
 
+
         if len(ruta) < 3:
-            return ruta  # no hay suficiente ruta para generar un vecino significativo
+            return {'ruta': ruta , 'fitness': np.inf}  # no hay suficiente ruta para generar un vecino significativo
             
         # seleccionamos el pivote
         idx_pivote = np.random.randint(0, len(ruta) - 2)
@@ -155,13 +188,13 @@ class TabuSearch_CARP:
                 alternativas.append(v)
         
         if not alternativas:
-            return ruta
+            return {'ruta': ruta , 'fitness': np.inf}
             
-        nodo_alternativo = np.random.choice(alternativas)
+        nodo_alternativo = int(np.random.choice(alternativas))
         
-        # cálculo del estado retrospectivo
-        ruta_truncada = ruta[:idx_pivote + 1]
-        bateria_gastada_trunc, _, arcos_truncados = self._evaluar_ruta_nodos(ruta_truncada)
+        # extracción del estado precalculado
+        bateria_gastada_trunc = baterias_prefijo[idx_pivote]
+        arcos_truncados = arcos_prefijo[idx_pivote].copy() 
         bateria_restante = self.bateria_max - bateria_gastada_trunc
         
         # evaluación de la alternativa elegida
@@ -170,7 +203,7 @@ class TabuSearch_CARP:
         costo_alt = self.grafo.costos_deadheading[nodo_pivote, nodo_alternativo] if fue_inspeccionado_alt else self.grafo.costos_inspeccion[nodo_pivote, nodo_alternativo]
         
         if bateria_restante < costo_alt:
-            return ruta # inválido por energía
+            return {'ruta': ruta , 'fitness': np.inf}       # inválido por energía
             
         bateria_restante -= costo_alt
         if not fue_inspeccionado_alt:
@@ -190,16 +223,17 @@ class TabuSearch_CARP:
         )
         
         # evaluación final
+        ruta_truncada = ruta[:idx_pivote + 1]
         ruta_completa = ruta_truncada + ruta_parcial
         bateria_total_final, _, _ = self._evaluar_ruta_nodos(ruta_completa)
 
         fitness = self._calcular_fitness(arcos_finales)
         
         return { 
-            "ruta": ruta_completa, 
-            "arcos_inspeccionados": arcos_finales, 
-            "bateria_consumida": bateria_total_final, 
-            "fitness": fitness 
+            'ruta': ruta_completa, 
+            'arcos_inspeccionados': arcos_finales, 
+            'bateria_consumida': bateria_total_final, 
+            'fitness': fitness 
         }
 
 
@@ -221,10 +255,10 @@ class TabuSearch_CARP:
         fitness_init = self._calcular_fitness(arcos_init)
         
         mejor_solucion = {
-            "ruta": ruta_init,
-            "arcos_inspeccionados": arcos_init,
-            "bateria_consumida": bat_init,
-            "fitness": fitness_init
+            'ruta': ruta_init,
+            'arcos_inspeccionados': arcos_init,
+            'bateria_consumida': bat_init,
+            'fitness': fitness_init
         }
         
         iteraciones_sin_mejora = 0
@@ -232,10 +266,12 @@ class TabuSearch_CARP:
         for i in range(self.max_iter):
             # exploración local
             
-            mejor_vecino = self._generar_vecino(mejor_solucion['ruta'], i)
+            baterias_prefijo, arcos_prefijo = self._precalcular_estados(mejor_solucion['ruta'])     # un solo recorrido de la ruta base por iteración
+
+            mejor_vecino = self._generar_vecino(mejor_solucion['ruta'], i, baterias_prefijo, arcos_prefijo)
             vecindario = [mejor_vecino]
             for _ in range(self.t_vecindad-1):
-                vecino = self._generar_vecino(mejor_solucion['ruta'], i)
+                vecino = self._generar_vecino(mejor_solucion['ruta'], i, baterias_prefijo, arcos_prefijo)
                 vecindario.append(vecino)
                 if vecino['fitness'] < mejor_vecino['fitness']:
                     mejor_vecino = vecino
@@ -289,9 +325,7 @@ class TabuSearch_CARP:
             tiempo_ejecucion_seg=tiempo_total
         )
 
-# ==========================================
-# Ejecución independiente
-# ==========================================
+# ejemplo de ejecución
 if __name__ == "__main__":
     
     red_tuberias = crear_red_prueba()
