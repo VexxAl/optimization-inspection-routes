@@ -2,6 +2,15 @@ import numpy as np
 import networkx as nx
 
 class RedTuberias:
+
+    COSTOS_BASE = {
+        'verde': {'deadheading': 100, 'inspeccion': 120},       # excelente estado
+        'azul': {'deadheading': 150, 'inspeccion': 180},        # buen estado
+        'cian': {'deadheading': 250, 'inspeccion': 300},        # estado regular
+        'naranja': {'deadheading': 400, 'inspeccion': 480},     # estado malo
+        'bordo': {'deadheading': 700, 'inspeccion': 840}        # estado crítico
+    }
+
     def __init__(self, n_nodos):
         self.n_nodes = n_nodos
         self.grafo = nx.DiGraph()
@@ -12,35 +21,41 @@ class RedTuberias:
         # Al principio del algoritmo todas las tuberías requieren inspección
         self.tuberias_requeridas = np.zeros((n_nodos, n_nodos), dtype=bool)
 
-    def agregar_tuberia(self, o:int, d:int, color:str):
+    def agregar_tuberia(self, o:int, d:int, color:str, distancia:float=1.0):
         """
         Agrega una tubería entre el nodo de origen (o) y el nodo de destino (d) con un color específico.
          - o: nodo de origen
          - d: nodo de destino
          - color: representa el estado de la tubería (verde, azul, cian, naranja, bordo)
+         - distancia: distancia entre los nodos.
         La función actualiza el grafo con los costos de deadheading e inspección para ambos sentidos (o -> d y d -> o).
         Además, marca la tubería como requerida para inspección.
         """
+
+        if color not in self.COSTOS_BASE:
+            raise ValueError(f"Color '{color}' no reconocido. Colores válidos: {list(self.COSTOS_BASE.keys())}")
         
-        COSTOS = {
-            'verde': {'deadheading': 100, 'inspeccion': 120},       # excelente estado
-            'azul': {'deadheading': 150, 'inspeccion': 180},        # buen estado
-            'cian': {'deadheading': 250, 'inspeccion': 300},        # estado regular
-            'naranja': {'deadheading': 400, 'inspeccion': 480},     # estado malo
-            'bordo': {'deadheading': 700, 'inspeccion': 840}        # estado crítico
+        costo_deadheading = self.COSTOS_BASE[color]['deadheading'] * distancia
+        costo_inspeccion = self.COSTOS_BASE[color]['inspeccion'] * distancia
+
+        # atributos para cada arco de la estructura
+        atributos_arco = {
+            'color': color,
+            'distancia': distancia,
+            'costo_deadheading': costo_deadheading,
+            'costo_inspeccion': costo_inspeccion,
+            'wheight': costo_deadheading
         }
 
-        costo_deadheading = COSTOS[color]['deadheading']
-        costo_inspeccion = COSTOS[color]['inspeccion']
 
         # sentido de o -> d
-        self.grafo.add_edge(o, d, weight=costo_deadheading)
+        self.grafo.add_edge(o, d, **atributos_arco)
         self.costos_deadheading[o][d] = costo_deadheading
         self.costos_inspeccion[o][d] = costo_inspeccion
         self.tuberias_requeridas[o][d] = True
 
         # sentido de d -> o
-        self.grafo.add_edge(d, o, weight=costo_deadheading)
+        self.grafo.add_edge(d, o, **atributos_arco)
         self.costos_deadheading[d][o] = costo_deadheading
         self.costos_inspeccion[d][o] = costo_inspeccion
         self.tuberias_requeridas[d][o] = True
@@ -101,3 +116,6 @@ if __name__ == "__main__":
     print("\nEjemplo de vecindades para el nodo 12:")
     for vecino in red.obtener_vecinas(12):
         print(f"Vecino: {vecino}, Costo Deadheading: {red.costos_deadheading[12][vecino]}")
+
+    print("\nEjemplo de atributos del arco entre el nodo 11 y el nodo 12:")
+    print(red.grafo[11][12])
