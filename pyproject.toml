@@ -10,4 +10,5 @@ dependencies = [
     "networkx>=3.6.1",
     "numpy>=2.4.6",
     "seaborn>=0.13.2",
+    "streamlit>=1.58.0",
 ]
