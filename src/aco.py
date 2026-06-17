@@ -144,11 +144,11 @@ class ACO_CARP:
         bateria_consumida = self.bateria_max - bateria
         cobertura = len(arcos_visitados)
 
-        # funcion objetivo: costo total dividido por la cobertura (con penalización para soluciones sin cobertura)
+        # funcion objetivo: capacidad máxima dividido por la cobertura (con penalización para soluciones sin cobertura)
         if cobertura == 0:
             z_fitness = float('inf') # Peor caso
         else:
-            z_fitness = bateria_consumida / cobertura 
+            z_fitness = self.bateria_max / cobertura 
 
 
         return ruta, z_fitness, cobertura, bateria_consumida
@@ -258,6 +258,6 @@ if __name__ == "__main__":
         max_iter=1000,        
         bateria_max=3000.0,
         omega=1000.0
-    ) # el mejor fitness para esta configuración debería ser 3000/40 = 75 (ya que hay 40 arcos únicos en la red de prueba)
+    ) # el """mejor fitness""" para esta configuración debería ser 3000/40 = 75 (ya que hay 40 arcos únicos en la red de prueba)
     
     resultado = aco.run()
