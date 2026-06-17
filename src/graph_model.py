@@ -1,3 +1,5 @@
+import os
+import json
 import numpy as np
 import networkx as nx
 
@@ -66,6 +68,61 @@ class RedTuberias:
         """
         return list(self.grafo.successors(nodo))
     
+    def guardar_red(self, path='data/red_tuberias.json'):
+        """
+        Guarda la red de tuberías en un archivo JSON.
+        """
+
+        aristas_guardadas = []
+
+        for o, d, data in self.grafo.edges(data=True):
+            # Para evitar duplicados, solo guardamos una dirección (o -> d) si o < d
+            if o < d:  
+                aristas_guardadas.append({
+                    'origen': o,
+                    'destino': d,
+                    'color': data['color'],
+                    'distancia': data['distancia']
+                })
+
+        data = {
+            'n_nodos': self.n_nodes,
+            'aristas': aristas_guardadas
+        }
+
+        with open(path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4)
+
+    @classmethod
+    def cargar_red(cls, path='data/red_tuberias.json') -> 'RedTuberias':
+        """
+        Carga la red de tuberías desde un archivo JSON.
+        """
+
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"Archivo '{path}' no encontrado.")
+
+        with open(path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+        n_nodos = data.get('n_nodos')
+        if n_nodos is None:
+            raise ValueError("El archivo JSON debe contener el número de nodos bajo la clave 'n_nodos'.")
+        
+        # instanciamos la clase
+        red = cls(n_nodos)
+
+        for arista in data.get('aristas', []):
+            red.agregar_tuberia(
+                o = arista['origen'],
+                d = arista['destino'],
+                color = arista['color'],
+                distancia = arista.get('distancia', 1.0)  # valor por defecto si no se especifica
+            )
+        
+        return red
+
+# ---   
 
 def crear_red_prueba():
     """
@@ -107,6 +164,9 @@ def crear_red_prueba():
 
     return red
 
+# ---
+
+# ejecución de prueba
 if __name__ == "__main__":
     red = crear_red_prueba()
     print("Grafo de tuberías creado:")
