@@ -1,6 +1,5 @@
 import time
 import numpy as np
-from graph_model import crear_red_prueba
 from core_models import ResultadoEjecucion
 
 
@@ -327,8 +326,9 @@ class TabuSearch_CARP:
 
 # ejemplo de ejecución
 if __name__ == "__main__":
-    
-    red_tuberias = crear_red_prueba()
+    from graph_model import RedTuberias
+
+    red_tuberias = RedTuberias.cargar_red("./data/red_base_5x5.json")
     
     # config similar a ACO
     tabu = TabuSearch_CARP(

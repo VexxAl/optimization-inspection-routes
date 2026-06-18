@@ -1,5 +1,4 @@
 import numpy as np
-from graph_model import crear_red_prueba
 from core_models import ResultadoEjecucion
 
 class ACO_CARP:
@@ -246,10 +245,11 @@ class ACO_CARP:
 
 # ejecución independiente
 if __name__ == "__main__":
+    from graph_model import RedTuberias
     
-    # generamos la red de prueba 5x5
-    red_tuberias = crear_red_prueba()
-    
+    # cargamos la red de prueba 5x5 desde ./data/red_base_5x5.json
+    red_tuberias = RedTuberias.cargar_red("./data/red_base_5x5.json")
+
     # Batería configurada para permitir varios movimientos
     # (Ej: 3000 unidades permite ~10-15 arcos dependiendo del color)
     aco = ACO_CARP(

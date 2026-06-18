@@ -1,0 +1,1085 @@
+{
+    "n_nodos": 100,
+    "aristas": [
+        {
+            "origen": 0,
+            "destino": 1,
+            "color": "verde",
+            "distancia": 3.9
+        },
+        {
+            "origen": 0,
+            "destino": 10,
+            "color": "azul",
+            "distancia": 5.0
+        },
+        {
+            "origen": 1,
+            "destino": 2,
+            "color": "bordo",
+            "distancia": 4.5
+        },
+        {
+            "origen": 1,
+            "destino": 11,
+            "color": "naranja",
+            "distancia": 5.0
+        },
+        {
+            "origen": 10,
+            "destino": 11,
+            "color": "azul",
+            "distancia": 1.1
+        },
+        {
+            "origen": 10,
+            "destino": 20,
+            "color": "azul",
+            "distancia": 1.3
+        },
+        {
+            "origen": 2,
+            "destino": 3,
+            "color": "azul",
+            "distancia": 2.5
+        },
+        {
+            "origen": 2,
+            "destino": 12,
+            "color": "naranja",
+            "distancia": 1.5
+        },
+        {
+            "origen": 11,
+            "destino": 12,
+            "color": "bordo",
+            "distancia": 3.6
+        },
+        {
+            "origen": 11,
+            "destino": 21,
+            "color": "naranja",
+            "distancia": 1.9
+        },
+        {
+            "origen": 3,
+            "destino": 4,
+            "color": "bordo",
+            "distancia": 1.2
+        },
+        {
+            "origen": 3,
+            "destino": 13,
+            "color": "cian",
+            "distancia": 1.3
+        },
+        {
+            "origen": 12,
+            "destino": 13,
+            "color": "naranja",
+            "distancia": 4.8
+        },
+        {
+            "origen": 12,
+            "destino": 22,
+            "color": "cian",
+            "distancia": 0.9
+        },
+        {
+            "origen": 4,
+            "destino": 5,
+            "color": "azul",
+            "distancia": 0.8
+        },
+        {
+            "origen": 4,
+            "destino": 14,
+            "color": "bordo",
+            "distancia": 3.6
+        },
+        {
+            "origen": 13,
+            "destino": 14,
+            "color": "naranja",
+            "distancia": 2.5
+        },
+        {
+            "origen": 13,
+            "destino": 23,
+            "color": "cian",
+            "distancia": 2.0
+        },
+        {
+            "origen": 5,
+            "destino": 6,
+            "color": "verde",
+            "distancia": 3.1
+        },
+        {
+            "origen": 5,
+            "destino": 15,
+            "color": "azul",
+            "distancia": 3.5
+        },
+        {
+            "origen": 14,
+            "destino": 15,
+            "color": "bordo",
+            "distancia": 4.0
+        },
+        {
+            "origen": 14,
+            "destino": 24,
+            "color": "azul",
+            "distancia": 1.9
+        },
+        {
+            "origen": 6,
+            "destino": 7,
+            "color": "naranja",
+            "distancia": 2.9
+        },
+        {
+            "origen": 6,
+            "destino": 16,
+            "color": "azul",
+            "distancia": 4.7
+        },
+        {
+            "origen": 15,
+            "destino": 16,
+            "color": "bordo",
+            "distancia": 3.6
+        },
+        {
+            "origen": 15,
+            "destino": 25,
+            "color": "cian",
+            "distancia": 2.2
+        },
+        {
+            "origen": 7,
+            "destino": 8,
+            "color": "azul",
+            "distancia": 3.1
+        },
+        {
+            "origen": 7,
+            "destino": 17,
+            "color": "bordo",
+            "distancia": 4.9
+        },
+        {
+            "origen": 16,
+            "destino": 17,
+            "color": "bordo",
+            "distancia": 4.4
+        },
+        {
+            "origen": 16,
+            "destino": 26,
+            "color": "naranja",
+            "distancia": 0.6
+        },
+        {
+            "origen": 8,
+            "destino": 9,
+            "color": "azul",
+            "distancia": 3.3
+        },
+        {
+            "origen": 8,
+            "destino": 18,
+            "color": "bordo",
+            "distancia": 1.1
+        },
+        {
+            "origen": 17,
+            "destino": 18,
+            "color": "azul",
+            "distancia": 0.5
+        },
+        {
+            "origen": 17,
+            "destino": 27,
+            "color": "verde",
+            "distancia": 1.2
+        },
+        {
+            "origen": 9,
+            "destino": 19,
+            "color": "azul",
+            "distancia": 3.3
+        },
+        {
+            "origen": 18,
+            "destino": 19,
+            "color": "bordo",
+            "distancia": 3.4
+        },
+        {
+            "origen": 18,
+            "destino": 28,
+            "color": "verde",
+            "distancia": 5.0
+        },
+        {
+            "origen": 19,
+            "destino": 29,
+            "color": "verde",
+            "distancia": 3.6
+        },
+        {
+            "origen": 20,
+            "destino": 21,
+            "color": "azul",
+            "distancia": 4.5
+        },
+        {
+            "origen": 20,
+            "destino": 30,
+            "color": "naranja",
+            "distancia": 3.7
+        },
+        {
+            "origen": 21,
+            "destino": 22,
+            "color": "azul",
+            "distancia": 2.3
+        },
+        {
+            "origen": 21,
+            "destino": 31,
+            "color": "bordo",
+            "distancia": 2.9
+        },
+        {
+            "origen": 22,
+            "destino": 23,
+            "color": "verde",
+            "distancia": 4.5
+        },
+        {
+            "origen": 22,
+            "destino": 32,
+            "color": "cian",
+            "distancia": 1.0
+        },
+        {
+            "origen": 23,
+            "destino": 24,
+            "color": "verde",
+            "distancia": 2.6
+        },
+        {
+            "origen": 23,
+            "destino": 33,
+            "color": "azul",
+            "distancia": 4.7
+        },
+        {
+            "origen": 24,
+            "destino": 25,
+            "color": "azul",
+            "distancia": 1.9
+        },
+        {
+            "origen": 24,
+            "destino": 34,
+            "color": "bordo",
+            "distancia": 3.0
+        },
+        {
+            "origen": 25,
+            "destino": 26,
+            "color": "cian",
+            "distancia": 0.6
+        },
+        {
+            "origen": 25,
+            "destino": 35,
+            "color": "naranja",
+            "distancia": 3.0
+        },
+        {
+            "origen": 26,
+            "destino": 27,
+            "color": "bordo",
+            "distancia": 4.6
+        },
+        {
+            "origen": 26,
+            "destino": 36,
+            "color": "azul",
+            "distancia": 2.3
+        },
+        {
+            "origen": 27,
+            "destino": 28,
+            "color": "azul",
+            "distancia": 2.0
+        },
+        {
+            "origen": 27,
+            "destino": 37,
+            "color": "cian",
+            "distancia": 1.3
+        },
+        {
+            "origen": 28,
+            "destino": 29,
+            "color": "azul",
+            "distancia": 4.3
+        },
+        {
+            "origen": 28,
+            "destino": 38,
+            "color": "verde",
+            "distancia": 2.3
+        },
+        {
+            "origen": 29,
+            "destino": 39,
+            "color": "cian",
+            "distancia": 2.4
+        },
+        {
+            "origen": 30,
+            "destino": 31,
+            "color": "azul",
+            "distancia": 4.7
+        },
+        {
+            "origen": 30,
+            "destino": 40,
+            "color": "naranja",
+            "distancia": 1.3
+        },
+        {
+            "origen": 31,
+            "destino": 32,
+            "color": "cian",
+            "distancia": 2.9
+        },
+        {
+            "origen": 31,
+            "destino": 41,
+            "color": "verde",
+            "distancia": 3.1
+        },
+        {
+            "origen": 32,
+            "destino": 33,
+            "color": "bordo",
+            "distancia": 1.5
+        },
+        {
+            "origen": 32,
+            "destino": 42,
+            "color": "azul",
+            "distancia": 2.1
+        },
+        {
+            "origen": 33,
+            "destino": 34,
+            "color": "cian",
+            "distancia": 2.4
+        },
+        {
+            "origen": 33,
+            "destino": 43,
+            "color": "bordo",
+            "distancia": 1.8
+        },
+        {
+            "origen": 34,
+            "destino": 35,
+            "color": "naranja",
+            "distancia": 2.6
+        },
+        {
+            "origen": 34,
+            "destino": 44,
+            "color": "naranja",
+            "distancia": 0.6
+        },
+        {
+            "origen": 35,
+            "destino": 36,
+            "color": "azul",
+            "distancia": 2.6
+        },
+        {
+            "origen": 35,
+            "destino": 45,
+            "color": "azul",
+            "distancia": 3.2
+        },
+        {
+            "origen": 36,
+            "destino": 37,
+            "color": "azul",
+            "distancia": 2.3
+        },
+        {
+            "origen": 36,
+            "destino": 46,
+            "color": "verde",
+            "distancia": 2.3
+        },
+        {
+            "origen": 37,
+            "destino": 38,
+            "color": "azul",
+            "distancia": 2.3
+        },
+        {
+            "origen": 37,
+            "destino": 47,
+            "color": "naranja",
+            "distancia": 1.8
+        },
+        {
+            "origen": 38,
+            "destino": 39,
+            "color": "azul",
+            "distancia": 1.8
+        },
+        {
+            "origen": 38,
+            "destino": 48,
+            "color": "cian",
+            "distancia": 2.7
+        },
+        {
+            "origen": 39,
+            "destino": 49,
+            "color": "naranja",
+            "distancia": 3.4
+        },
+        {
+            "origen": 40,
+            "destino": 41,
+            "color": "verde",
+            "distancia": 4.0
+        },
+        {
+            "origen": 40,
+            "destino": 50,
+            "color": "naranja",
+            "distancia": 5.0
+        },
+        {
+            "origen": 41,
+            "destino": 42,
+            "color": "verde",
+            "distancia": 2.8
+        },
+        {
+            "origen": 41,
+            "destino": 51,
+            "color": "bordo",
+            "distancia": 2.2
+        },
+        {
+            "origen": 42,
+            "destino": 43,
+            "color": "azul",
+            "distancia": 4.1
+        },
+        {
+            "origen": 42,
+            "destino": 52,
+            "color": "cian",
+            "distancia": 2.0
+        },
+        {
+            "origen": 43,
+            "destino": 44,
+            "color": "bordo",
+            "distancia": 1.6
+        },
+        {
+            "origen": 43,
+            "destino": 53,
+            "color": "bordo",
+            "distancia": 3.8
+        },
+        {
+            "origen": 44,
+            "destino": 45,
+            "color": "azul",
+            "distancia": 2.0
+        },
+        {
+            "origen": 44,
+            "destino": 54,
+            "color": "bordo",
+            "distancia": 0.5
+        },
+        {
+            "origen": 45,
+            "destino": 46,
+            "color": "verde",
+            "distancia": 2.5
+        },
+        {
+            "origen": 45,
+            "destino": 55,
+            "color": "bordo",
+            "distancia": 3.2
+        },
+        {
+            "origen": 46,
+            "destino": 47,
+            "color": "verde",
+            "distancia": 4.3
+        },
+        {
+            "origen": 46,
+            "destino": 56,
+            "color": "cian",
+            "distancia": 2.3
+        },
+        {
+            "origen": 47,
+            "destino": 48,
+            "color": "verde",
+            "distancia": 2.1
+        },
+        {
+            "origen": 47,
+            "destino": 57,
+            "color": "verde",
+            "distancia": 2.8
+        },
+        {
+            "origen": 48,
+            "destino": 49,
+            "color": "azul",
+            "distancia": 3.7
+        },
+        {
+            "origen": 48,
+            "destino": 58,
+            "color": "azul",
+            "distancia": 2.2
+        },
+        {
+            "origen": 49,
+            "destino": 59,
+            "color": "naranja",
+            "distancia": 1.0
+        },
+        {
+            "origen": 50,
+            "destino": 51,
+            "color": "verde",
+            "distancia": 2.6
+        },
+        {
+            "origen": 50,
+            "destino": 60,
+            "color": "bordo",
+            "distancia": 3.6
+        },
+        {
+            "origen": 51,
+            "destino": 52,
+            "color": "azul",
+            "distancia": 4.5
+        },
+        {
+            "origen": 51,
+            "destino": 61,
+            "color": "bordo",
+            "distancia": 2.3
+        },
+        {
+            "origen": 52,
+            "destino": 53,
+            "color": "verde",
+            "distancia": 1.4
+        },
+        {
+            "origen": 52,
+            "destino": 62,
+            "color": "naranja",
+            "distancia": 4.5
+        },
+        {
+            "origen": 53,
+            "destino": 54,
+            "color": "bordo",
+            "distancia": 3.9
+        },
+        {
+            "origen": 53,
+            "destino": 63,
+            "color": "verde",
+            "distancia": 4.9
+        },
+        {
+            "origen": 54,
+            "destino": 55,
+            "color": "bordo",
+            "distancia": 4.6
+        },
+        {
+            "origen": 54,
+            "destino": 64,
+            "color": "verde",
+            "distancia": 2.2
+        },
+        {
+            "origen": 55,
+            "destino": 56,
+            "color": "cian",
+            "distancia": 2.5
+        },
+        {
+            "origen": 55,
+            "destino": 65,
+            "color": "naranja",
+            "distancia": 0.9
+        },
+        {
+            "origen": 56,
+            "destino": 57,
+            "color": "azul",
+            "distancia": 2.1
+        },
+        {
+            "origen": 56,
+            "destino": 66,
+            "color": "cian",
+            "distancia": 3.7
+        },
+        {
+            "origen": 57,
+            "destino": 58,
+            "color": "naranja",
+            "distancia": 2.6
+        },
+        {
+            "origen": 57,
+            "destino": 67,
+            "color": "bordo",
+            "distancia": 3.6
+        },
+        {
+            "origen": 58,
+            "destino": 59,
+            "color": "verde",
+            "distancia": 1.1
+        },
+        {
+            "origen": 58,
+            "destino": 68,
+            "color": "verde",
+            "distancia": 2.0
+        },
+        {
+            "origen": 59,
+            "destino": 69,
+            "color": "naranja",
+            "distancia": 3.5
+        },
+        {
+            "origen": 60,
+            "destino": 61,
+            "color": "azul",
+            "distancia": 3.0
+        },
+        {
+            "origen": 60,
+            "destino": 70,
+            "color": "cian",
+            "distancia": 2.3
+        },
+        {
+            "origen": 61,
+            "destino": 62,
+            "color": "naranja",
+            "distancia": 2.5
+        },
+        {
+            "origen": 61,
+            "destino": 71,
+            "color": "bordo",
+            "distancia": 5.0
+        },
+        {
+            "origen": 62,
+            "destino": 63,
+            "color": "cian",
+            "distancia": 2.9
+        },
+        {
+            "origen": 62,
+            "destino": 72,
+            "color": "naranja",
+            "distancia": 4.3
+        },
+        {
+            "origen": 63,
+            "destino": 64,
+            "color": "verde",
+            "distancia": 3.6
+        },
+        {
+            "origen": 63,
+            "destino": 73,
+            "color": "azul",
+            "distancia": 0.5
+        },
+        {
+            "origen": 64,
+            "destino": 65,
+            "color": "cian",
+            "distancia": 0.6
+        },
+        {
+            "origen": 64,
+            "destino": 74,
+            "color": "verde",
+            "distancia": 4.9
+        },
+        {
+            "origen": 65,
+            "destino": 66,
+            "color": "cian",
+            "distancia": 2.9
+        },
+        {
+            "origen": 65,
+            "destino": 75,
+            "color": "verde",
+            "distancia": 2.7
+        },
+        {
+            "origen": 66,
+            "destino": 67,
+            "color": "azul",
+            "distancia": 2.6
+        },
+        {
+            "origen": 66,
+            "destino": 76,
+            "color": "bordo",
+            "distancia": 4.0
+        },
+        {
+            "origen": 67,
+            "destino": 68,
+            "color": "naranja",
+            "distancia": 1.0
+        },
+        {
+            "origen": 67,
+            "destino": 77,
+            "color": "naranja",
+            "distancia": 3.3
+        },
+        {
+            "origen": 68,
+            "destino": 69,
+            "color": "azul",
+            "distancia": 1.3
+        },
+        {
+            "origen": 68,
+            "destino": 78,
+            "color": "bordo",
+            "distancia": 3.3
+        },
+        {
+            "origen": 69,
+            "destino": 79,
+            "color": "bordo",
+            "distancia": 4.4
+        },
+        {
+            "origen": 70,
+            "destino": 71,
+            "color": "verde",
+            "distancia": 4.9
+        },
+        {
+            "origen": 70,
+            "destino": 80,
+            "color": "azul",
+            "distancia": 1.6
+        },
+        {
+            "origen": 71,
+            "destino": 72,
+            "color": "cian",
+            "distancia": 2.4
+        },
+        {
+            "origen": 71,
+            "destino": 81,
+            "color": "bordo",
+            "distancia": 3.6
+        },
+        {
+            "origen": 72,
+            "destino": 73,
+            "color": "azul",
+            "distancia": 4.4
+        },
+        {
+            "origen": 72,
+            "destino": 82,
+            "color": "azul",
+            "distancia": 4.7
+        },
+        {
+            "origen": 73,
+            "destino": 74,
+            "color": "naranja",
+            "distancia": 2.9
+        },
+        {
+            "origen": 73,
+            "destino": 83,
+            "color": "azul",
+            "distancia": 1.0
+        },
+        {
+            "origen": 74,
+            "destino": 75,
+            "color": "azul",
+            "distancia": 1.1
+        },
+        {
+            "origen": 74,
+            "destino": 84,
+            "color": "cian",
+            "distancia": 1.1
+        },
+        {
+            "origen": 75,
+            "destino": 76,
+            "color": "verde",
+            "distancia": 2.5
+        },
+        {
+            "origen": 75,
+            "destino": 85,
+            "color": "verde",
+            "distancia": 3.3
+        },
+        {
+            "origen": 76,
+            "destino": 77,
+            "color": "azul",
+            "distancia": 3.9
+        },
+        {
+            "origen": 76,
+            "destino": 86,
+            "color": "bordo",
+            "distancia": 2.8
+        },
+        {
+            "origen": 77,
+            "destino": 78,
+            "color": "azul",
+            "distancia": 3.8
+        },
+        {
+            "origen": 77,
+            "destino": 87,
+            "color": "verde",
+            "distancia": 3.9
+        },
+        {
+            "origen": 78,
+            "destino": 79,
+            "color": "cian",
+            "distancia": 0.9
+        },
+        {
+            "origen": 78,
+            "destino": 88,
+            "color": "naranja",
+            "distancia": 1.2
+        },
+        {
+            "origen": 79,
+            "destino": 89,
+            "color": "verde",
+            "distancia": 4.2
+        },
+        {
+            "origen": 80,
+            "destino": 81,
+            "color": "naranja",
+            "distancia": 3.9
+        },
+        {
+            "origen": 80,
+            "destino": 90,
+            "color": "verde",
+            "distancia": 1.7
+        },
+        {
+            "origen": 81,
+            "destino": 82,
+            "color": "verde",
+            "distancia": 3.7
+        },
+        {
+            "origen": 81,
+            "destino": 91,
+            "color": "naranja",
+            "distancia": 4.9
+        },
+        {
+            "origen": 82,
+            "destino": 83,
+            "color": "cian",
+            "distancia": 2.0
+        },
+        {
+            "origen": 82,
+            "destino": 92,
+            "color": "bordo",
+            "distancia": 1.3
+        },
+        {
+            "origen": 83,
+            "destino": 84,
+            "color": "cian",
+            "distancia": 4.7
+        },
+        {
+            "origen": 83,
+            "destino": 93,
+            "color": "cian",
+            "distancia": 1.0
+        },
+        {
+            "origen": 84,
+            "destino": 85,
+            "color": "azul",
+            "distancia": 4.4
+        },
+        {
+            "origen": 84,
+            "destino": 94,
+            "color": "naranja",
+            "distancia": 3.4
+        },
+        {
+            "origen": 85,
+            "destino": 86,
+            "color": "verde",
+            "distancia": 1.6
+        },
+        {
+            "origen": 85,
+            "destino": 95,
+            "color": "cian",
+            "distancia": 0.8
+        },
+        {
+            "origen": 86,
+            "destino": 87,
+            "color": "verde",
+            "distancia": 3.9
+        },
+        {
+            "origen": 86,
+            "destino": 96,
+            "color": "bordo",
+            "distancia": 1.7
+        },
+        {
+            "origen": 87,
+            "destino": 88,
+            "color": "cian",
+            "distancia": 3.8
+        },
+        {
+            "origen": 87,
+            "destino": 97,
+            "color": "bordo",
+            "distancia": 2.5
+        },
+        {
+            "origen": 88,
+            "destino": 89,
+            "color": "naranja",
+            "distancia": 4.3
+        },
+        {
+            "origen": 88,
+            "destino": 98,
+            "color": "azul",
+            "distancia": 4.8
+        },
+        {
+            "origen": 89,
+            "destino": 99,
+            "color": "cian",
+            "distancia": 0.8
+        },
+        {
+            "origen": 90,
+            "destino": 91,
+            "color": "verde",
+            "distancia": 3.0
+        },
+        {
+            "origen": 91,
+            "destino": 92,
+            "color": "bordo",
+            "distancia": 3.6
+        },
+        {
+            "origen": 92,
+            "destino": 93,
+            "color": "naranja",
+            "distancia": 3.7
+        },
+        {
+            "origen": 93,
+            "destino": 94,
+            "color": "cian",
+            "distancia": 4.6
+        },
+        {
+            "origen": 94,
+            "destino": 95,
+            "color": "cian",
+            "distancia": 3.3
+        },
+        {
+            "origen": 95,
+            "destino": 96,
+            "color": "azul",
+            "distancia": 4.4
+        },
+        {
+            "origen": 96,
+            "destino": 97,
+            "color": "bordo",
+            "distancia": 3.0
+        },
+        {
+            "origen": 97,
+            "destino": 98,
+            "color": "cian",
+            "distancia": 3.3
+        },
+        {
+            "origen": 98,
+            "destino": 99,
+            "color": "cian",
+            "distancia": 1.3
+        }
+    ]
+}
