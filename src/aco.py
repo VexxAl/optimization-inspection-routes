@@ -213,6 +213,7 @@ class ACO_CARP:
         print("\n--- Resultados Finales ---")
         print(f"Mejor Puntaje Z (Costo por tramo): {self.mejor_z_global:.2f}")
         print(f"Tramos únicos inspeccionados: {self.mejor_cobertura_global} / {self.red.grafo.number_of_edges() // 2}")
+        print(f"Batería consumida total: {self.mejor_bateria_consumida_global:.2f} / {self.bateria_max}")
         print(f"Ruta propuesta:\n{self.mejor_ruta_global}")
         
         return ResultadoEjecucion(
