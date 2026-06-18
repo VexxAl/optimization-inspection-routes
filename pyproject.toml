@@ -1,7 +1,7 @@
 [project]
 name = "optimization-inspection-routes"
-version = "0.1.0"
-description = "Add your description here"
+version = "1.0.0"
+description = "Optimización poblacional de rutas de inspección autónoma en redes de infraestructura lineal: Un enfoque basado en Optimización por Colonia de Hormigas (ACO) para el Problema de Enrutamiento de Arcos Capacitados (CARP)."
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
