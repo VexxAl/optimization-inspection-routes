@@ -1,6 +1,8 @@
 import numpy as np
 from core_models import ResultadoEjecucion
 
+np.random.seed(19) # para reproducibilidad
+
 class ACO_CARP:
     """
     Algoritmo de Optimización por Colonia de Hormigas (ACO) para el 

@@ -2,6 +2,7 @@ import time
 import numpy as np
 from core_models import ResultadoEjecucion
 
+np.random.seed(19) # para reproducibilidad
 
 class TabuSearch_CARP:
     """
