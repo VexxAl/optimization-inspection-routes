@@ -102,7 +102,7 @@ def instanciar_redes_ejemplos():
     Ejecuta el pipeline de generación, serialización y reconstrucción.
     """
 
-    directorio_instancias = os.path.join(os.path.dirname(__file__), '..', 'data')   # guardamos en ../data para mantener el proyecto organizado
+    directorio_instancias = "./data"  # guardamos en ./data para mantener el proyecto organizado
     os.makedirs(directorio_instancias, exist_ok=True)
     
     instancias = {
