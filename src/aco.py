@@ -240,8 +240,7 @@ class ACO_CARP:
             fitness_final=self.mejor_z_global,
             bateria_consumida_total=self.mejor_bateria_consumida_global,
             arcos_unicos_inspeccionados=self.mejor_cobertura_global,
-            historial_mejor_global=self.historial_z,
-            matriz_feromonas_final=self.tau.copy()
+            historial_mejor_global=self.historial_z
         )
 
 # ---
