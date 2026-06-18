@@ -1,6 +1,8 @@
 import numpy as np
 from core_models import ResultadoEjecucion
 
+np.random.seed(19) # para reproducibilidad
+
 class ACO_CARP:
     """
     Algoritmo de Optimización por Colonia de Hormigas (ACO) para el 
@@ -211,6 +213,7 @@ class ACO_CARP:
         print("\n--- Resultados Finales ---")
         print(f"Mejor Puntaje Z (Costo por tramo): {self.mejor_z_global:.2f}")
         print(f"Tramos únicos inspeccionados: {self.mejor_cobertura_global} / {self.red.grafo.number_of_edges() // 2}")
+        print(f"Batería consumida total: {self.mejor_bateria_consumida_global:.2f} / {self.bateria_max}")
         print(f"Ruta propuesta:\n{self.mejor_ruta_global}")
         
         return ResultadoEjecucion(
@@ -237,8 +240,7 @@ class ACO_CARP:
             fitness_final=self.mejor_z_global,
             bateria_consumida_total=self.mejor_bateria_consumida_global,
             arcos_unicos_inspeccionados=self.mejor_cobertura_global,
-            historial_mejor_global=self.historial_z,
-            matriz_feromonas_final=self.tau.copy()
+            historial_mejor_global=self.historial_z
         )
 
 # ---

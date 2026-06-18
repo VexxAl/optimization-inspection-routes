@@ -2,6 +2,7 @@ import os
 import numpy as np
 from graph_model import RedTuberias
 
+np.random.seed(19) # para reproducibilidad
 
 def generar_red_base() -> RedTuberias:
     """

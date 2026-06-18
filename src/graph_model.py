@@ -3,6 +3,8 @@ import json
 import numpy as np
 import networkx as nx
 
+np.random.seed(19) # para reproducibilidad
+
 class RedTuberias:
 
     COSTOS_BASE = {
