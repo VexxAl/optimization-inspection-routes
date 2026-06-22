@@ -233,7 +233,8 @@ class TabuSearch_CARP:
             'ruta': ruta_completa, 
             'arcos_inspeccionados': arcos_finales, 
             'bateria_consumida': bateria_total_final, 
-            'fitness': fitness 
+            'fitness': fitness,
+            'iteracion': 0
         }
 
 
@@ -258,7 +259,8 @@ class TabuSearch_CARP:
             'ruta': ruta_init,
             'arcos_inspeccionados': arcos_init,
             'bateria_consumida': bat_init,
-            'fitness': fitness_init
+            'fitness': fitness_init, 
+            'iteracion': 0
         }
         
         iteraciones_sin_mejora = 0
@@ -279,6 +281,7 @@ class TabuSearch_CARP:
             # actualización de la mejor solución global y del estado actual
             if mejor_vecino['fitness'] < mejor_solucion['fitness']:
                 mejor_solucion = mejor_vecino
+                mejor_solucion['iteracion'] = i + 1
                 iteraciones_sin_mejora = 0
                 print(f"Iteración {i+1} -> Nuevo Óptimo | Z: {mejor_solucion['fitness']:.2f} | Cobertura: {len(mejor_solucion['arcos_inspeccionados'])} tramos | Batería consumida: {mejor_solucion['bateria_consumida']:.2f}")
             else:
@@ -322,7 +325,8 @@ class TabuSearch_CARP:
             bateria_consumida_deadheading=bat_dh,
             arcos_unicos_inspeccionados=len(arcos_inspeccionados_finales),
             historial_mejor_global=historial_mejor_global,
-            tiempo_ejecucion_seg=tiempo_total
+            tiempo_ejecucion_seg=tiempo_total,
+            mejor_iteracion=mejor_solucion['iteracion']
         )
 
 # ejemplo de ejecución

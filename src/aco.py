@@ -1,3 +1,4 @@
+import time
 import numpy as np
 from core_models import ResultadoEjecucion
 
@@ -42,6 +43,8 @@ class ACO_CARP:
         self.mejor_z_global = float('inf')
         self.mejor_cobertura_global = 0
         self.mejor_bateria_consumida_global = 0
+        self.mejor_bateria_deadheading_global = 0
+        self.mejor_iteracion_global = 0
 
 
     def obtener_costo_arco(self, u, v, arcos_visitados):
@@ -123,6 +126,7 @@ class ACO_CARP:
         ruta = [nodo_inicio]
         arcos_visitados = set() # memoria de estado individual
         bateria = self.bateria_max
+        bateria_deadheading = 0
         nodo_actual = nodo_inicio
         nodo_anterior = None
         
@@ -134,7 +138,9 @@ class ACO_CARP:
                 
             costo, fue_visitado = self.obtener_costo_arco(nodo_actual, siguiente_nodo, arcos_visitados)
             bateria -= costo
-            
+            if fue_visitado:
+                bateria_deadheading += costo
+
             if not fue_visitado:
                 arcos_visitados.add(tuple(sorted((nodo_actual, siguiente_nodo))))
                 
@@ -152,7 +158,7 @@ class ACO_CARP:
             z_fitness = self.bateria_max / cobertura 
 
 
-        return ruta, z_fitness, cobertura, bateria_consumida
+        return ruta, z_fitness, cobertura, bateria_consumida, bateria_deadheading
 
 
     def actualizar_feromonas(self, mejor_ruta_iter, mejor_z_iter):
@@ -181,39 +187,57 @@ class ACO_CARP:
         print(f"Batería Máxima: {self.bateria_max} | Factor de Castigo: {self.omega}\n")
 
         self.historial_z = []
-        
+        patience_counter = 0
+
+        inicio = time.time() # iniciamos el cronómetro para medir el tiempo total de ejecución
+
         for iteracion in range(self.max_iter):            
             mejor_ruta_iter = []
             mejor_z_iter = float('inf')
             mejor_cobertura_iter = 0
-            mejor_bateria_consumida_iter = 0            
-            
+            mejor_bateria_consumida_iter = 0 
+            mejor_bateria_deadheading_iter = 0
+
             for _ in range(self.n_hormigas):
                 # empezamos en el Nodo 0 (podemos variar esto en los experimentos para generar diversidad)
-                ruta, z_fitness, cobertura, bateria_consumida = self.simular_hormiga(nodo_inicio=0)
+                ruta, z_fitness, cobertura, bateria_consumida, bateria_deadheading = self.simular_hormiga(nodo_inicio=0)
                 
                 if z_fitness < mejor_z_iter:
                     mejor_z_iter = z_fitness
                     mejor_ruta_iter = ruta
                     mejor_cobertura_iter = cobertura
                     mejor_bateria_consumida_iter = bateria_consumida
-                    
+                    mejor_bateria_deadheading_iter = bateria_deadheading
+            
+            self.historial_z.append(mejor_z_iter)
+
             if mejor_z_iter < self.mejor_z_global:
+                patience_counter = 0
                 self.mejor_z_global = mejor_z_iter
                 self.mejor_ruta_global = mejor_ruta_iter
                 self.mejor_cobertura_global = mejor_cobertura_iter
                 self.mejor_bateria_consumida_global = mejor_bateria_consumida_iter
+                self.mejor_bateria_deadheading_global = mejor_bateria_deadheading_iter
+                self.mejor_iteracion_global = iteracion + 1
 
                 print(f"Iteración {iteracion+1} -> Nuevo Óptimo | Z: {self.mejor_z_global:.2f} | Cobertura: {self.mejor_cobertura_global} tramos | Batería consumida: {self.mejor_bateria_consumida_global:.2f}")
-                
+            else:
+                patience_counter += 1 if iteracion > 50 else 0 # damos un margen de 50 iteraciones para encontrar la primera mejora antes de activar el contador de paciencia
+            
+            if patience_counter >= 15:
+                print(f"Detención temprana en iteración {iteracion+1} por falta de mejora.")
+                self.actualizar_feromonas(mejor_ruta_iter, mejor_z_iter)
+                break
+
             self.actualizar_feromonas(mejor_ruta_iter, mejor_z_iter)
-            self.historial_z.append(self.mejor_z_global)
         
+        duracion = time.time() - inicio
 
         print("\n--- Resultados Finales ---")
         print(f"Mejor Puntaje Z (Costo por tramo): {self.mejor_z_global:.2f}")
         print(f"Tramos únicos inspeccionados: {self.mejor_cobertura_global} / {self.red.grafo.number_of_edges() // 2}")
         print(f"Batería consumida total: {self.mejor_bateria_consumida_global:.2f} / {self.bateria_max}")
+        print(f"Batería consumida en deadheading: {self.mejor_bateria_deadheading_global:.2f}")
         print(f"Ruta propuesta:\n{self.mejor_ruta_global}")
         
         return ResultadoEjecucion(
@@ -236,11 +260,21 @@ class ACO_CARP:
                 self.mejor_ruta_global[i + 1])
                 for i in range(len(self.mejor_ruta_global) - 1)
             ],
-
+            
             fitness_final=self.mejor_z_global,
+
+            mejor_iteracion=self.mejor_iteracion_global,
+
             bateria_consumida_total=self.mejor_bateria_consumida_global,
+            bateria_consumida_deadheading=self.mejor_bateria_deadheading_global,
+
             arcos_unicos_inspeccionados=self.mejor_cobertura_global,
-            historial_mejor_global=self.historial_z
+            
+            historial_mejor_global=self.historial_z,
+
+            tiempo_ejecucion_seg=duracion,
+
+            matriz_feromonas_final=self.tau.copy()
         )
 
 # ---
