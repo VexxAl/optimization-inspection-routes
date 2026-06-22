@@ -60,6 +60,8 @@ class ResultadoEjecucion:
 
     tiempo_ejecucion_seg: float = 0.0
 
+    mejor_iteracion: int = 0
+
     motivo_parada: str = "iteraciones_maximas"
 
     # ============================================================
