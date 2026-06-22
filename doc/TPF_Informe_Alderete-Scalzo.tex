@@ -104,14 +104,6 @@ Una vez que todas las hormigas de la población completan sus recorridos, se pro
 
 El aporte de feromona $\Delta\tau_{\text{best}}$ se calcula siempre en función de la mejor solución global encontrada en todo el historial de ejecución, depositando una cantidad inversamente proporcional a su valor de $Z$. Estos mecanismos, combinados con las reglas de desactivación por callejones sin salida, dotan al algoritmo de una capacidad analítica superior para sortear geometrías restrictivas.
 
-% PLACEHOLDER FIGURA: Heatmap de feromonas
-% \begin{figure}[htbp]
-% \centering
-% \includegraphics[width=\columnwidth]{nombre_imagen_feromonas.png}
-% \caption{Matriz de feromonas final, ilustrando la concentración del rastro estigmérgico que conforma la memoria a largo plazo del enjambre.}
-% \label{fig:heatmap}
-% \end{figure}
-
 \subsection{Pseudocódigo del Algoritmo Propuesto (ACO)}
 Para sintetizar la dinámica poblacional del modelo diseñado, el flujo de ejecución principal se estructura de la siguiente manera:
 
@@ -174,13 +166,13 @@ Con el objetivo de mitigar el sesgo topológico y evaluar la escalabilidad del s
     \item \textbf{Red Asimétrica Realista:} Un grafo que incorpora perturbaciones geométricas y distancias heterogéneas, simulando roturas, calles diagonales y callejones sin salida presentes en una red urbana de agua potable real.
 \end{enumerate}
 
-% PLACEHOLDER FIGURA: Topología Red Base
-% \begin{figure}[htbp]
-% \centering
-% \includegraphics[width=\columnwidth]{nombre_imagen_red_base.png}
-% \caption{Grafo representativo de la red base $5 \times 5$ utilizada como entorno de control con costos asimétricos por tubería.}
-% \label{fig:redbase}
-% \end{figure}
+% Topología Red Base
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{img/red_base.png}
+\caption{Grafo representativo de la red base $5 \times 5$ utilizada como entorno de control con costos asimétricos por tubería.}
+\label{fig:redbase}
+\end{figure}
 
 Para aislar la varianza inherente a la estocasticidad de ambas metaheurísticas, cada configuración fue sometida a un estudio empírico de $15$ ejecuciones independientes (corridas) por algoritmo y por instancia de red.
 
@@ -193,13 +185,13 @@ Cabe destacar que la exploración del espacio paramétrico reveló que esta conf
 
 Por su parte, la Búsqueda Tabú alcanzó su punto de máximo rendimiento con un tamaño de vecindad de $41$ nodos evaluados por iteración, una tenencia en la lista tabú de $23$ pasos y una penalización $\Omega = 675.27$.
 
-% PLACEHOLDER FIGURA: Coordenadas Paralelas (Optuna)
-% \begin{figure}[htbp]
-% \centering
-% \includegraphics[width=\columnwidth]{nombre_imagen_optuna.png}
-% \caption{Exploración del espacio paramétrico, evidenciando la correlación entre las combinaciones de hiperparámetros y la minimización de Z.}
-% \label{fig:optuna}
-% \end{figure}
+% Coordenadas Paralelas (Optuna)
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{img/coordenadas_paralelas.png}
+\caption{Exploración del espacio paramétrico, evidenciando la correlación entre las combinaciones de hiperparámetros y la minimización de Z.}
+\label{fig:optuna}
+\end{figure}
 
 \subsection{Análisis Comparativo de Rendimiento y Robustez}
 Los resultados del despliegue en la simulación demostraron una superioridad contundente del enfoque poblacional. Evaluando la calidad global de la exploración, el ACO logró un Fitness Z mediano de $166.67$, superando a la Búsqueda Tabú que obtuvo un puntaje de $176.47$ en su mejor escenario.
@@ -208,21 +200,21 @@ Para corroborar la validez estadística de estos hallazgos, se aplicó la prueba
 
 La dispersión de las métricas obtenidas no solo confirma que el modelo ACO encuentra soluciones más óptimas de manera global, sino que además presenta una varianza significativamente menor. Esta estrecha agrupación de resultados indica que la inteligencia de enjambre es computacionalmente más robusta y dependiente en menor medida de una semilla estocástica afortunada, logrando eludir los mínimos locales que frecuentemente corrompen las ejecuciones de trayectorias únicas.
 
-% PLACEHOLDER FIGURA: Convergencia
-% \begin{figure}[htbp]
-% \centering
-% \includegraphics[width=\columnwidth]{nombre_imagen_convergencia.png}
-% \caption{Evolución del Fitness a lo largo de las iteraciones, comparando la estabilización del óptimo global en la colonia.}
-% \label{fig:convergencia}
-% \end{figure}
+% Convergencia
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{img/convergencia_fitness.png}
+\caption{Evolución del Fitness a lo largo de las iteraciones, comparando la estabilización del óptimo global en la colonia.}
+\label{fig:convergencia}
+\end{figure}
 
-% PLACEHOLDER FIGURA: Boxplot / Robustez
-% \begin{figure}[htbp]
-% \centering
-% \includegraphics[width=\columnwidth]{nombre_imagen_boxplot.png}
-% \caption{Dispersión del Fitness Z en 15 ejecuciones independientes, validando la estabilidad poblacional de ACO frente a TS.}
-% \label{fig:boxplot}
-% \end{figure}
+% Boxplot / Robustez
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{img/dispersion_robustez.png}
+\caption{Dispersión del Fitness Z en 15 ejecuciones independientes, validando la estabilidad poblacional de ACO frente a TS.}
+\label{fig:boxplot}
+\end{figure}
 
 \subsection{Eficiencia Energética: El problema del Deadheading}
 El análisis pormenorizado del gasto de la batería ($B_{\text{max}}$) revela la principal falencia de las heurísticas clásicas en el problema CARP con penalización de desgaste, dando sustento a la Hipótesis 2.
@@ -231,21 +223,21 @@ En topologías complejas (como la red asimétrica o con callejones sin salida), 
 
 Por el contrario, el ACO utiliza su matriz global de feromonas para anticipar y construir ``derivas armónicas''. Al penalizar dinámicamente la visibilidad ($\Omega$) y reforzar las rutas óptimas a largo plazo, la colonia traza recorridos fluidos que evitan las trampas espaciales. Esto se traduce en una pendiente de cobertura diametralmente superior: por cada unidad de energía invertida, el ACO inspecciona una mayor cantidad de infraestructura nueva, relegando el tránsito inactivo a situaciones estrictamente inevitables.
 
-% PLACEHOLDER FIGURA: Rutas Óptimas Comparadas (Opcional, puede ir un panel con subfigures)
-% \begin{figure}[htbp]
-% \centering
-% \includegraphics[width=\columnwidth]{nombre_imagen_rutas.png}
-% \caption{Contraste topológico de las trayectorias propuestas; nótese la evasión de rutas redundantes en la solución generada por ACO.}
-% \label{fig:rutas}
-% \end{figure}
+% Ruta Óptima
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{img/trayectoria_optima.png}
+\caption{Trayectorias propuestas, nótese la evasión de rutas redundantes y rutas de alto costo en la solución generada.}
+\label{fig:rutas}
+\end{figure}
 
-% PLACEHOLDER FIGURA: Scatter o Barras (Deadheading)
-% \begin{figure}[htbp]
-% \centering
-% \includegraphics[width=\columnwidth]{nombre_imagen_barras_energia.png}
-% \caption{Desglose de consumo energético total, separando la energía de inspección útil de las pérdidas por fricción inactiva.}
-% \label{fig:energia}
-% \end{figure}
+% Barras (Deadheading)
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\columnwidth]{img/consumo_energetico.png}
+\caption{Desglose de consumo energético total, separando la energía de inspección útil de las pérdidas por fricción inactiva.}
+\label{fig:energia}
+\end{figure}
 
 \section{Conclusiones y Trabajo Futuro}
 El presente trabajo abordó el desafío crítico de planificar trayectorias óptimas para vehículos autónomos de inspección en infraestructuras lineales bajo estrictas restricciones energéticas. La reformulación del Problema de Enrutamiento de Arcos Capacitados (CARP) mediante una función objetivo basada en la capacidad máxima de diseño ($B_{\text{max}}$) permitió penalizar intrínsecamente las detenciones prematuras, garantizando una evaluación algorítmica robusta incluso ante la presencia de callejones sin salida topológicos.
