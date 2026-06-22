@@ -1,3 +1,7 @@
+import sys
+from pathlib import Path
+import joblib
+
 import streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px
@@ -5,6 +9,13 @@ import plotly.express as px
 from graph_generator import generar_red_base
 from aco import ACO_CARP
 from tabu import TabuSearch_CARP
+
+# agregamos la ruta data al path para importar los módulos de src
+src_path = Path().resolve()
+sys.path.append(str(src_path))
+
+estudio_aco = joblib.load(str(src_path / "data/calibracion_aco.pkl"))
+estudio_tabu = joblib.load(str(src_path / "data/calibracion_tabu.pkl"))
 
 # Configuración de página
 st.set_page_config(page_title="Hykue-CARP Metaheurísticas Dashboard", layout="wide")
@@ -255,19 +266,27 @@ def main():
     st.sidebar.markdown("---")
 
     if algoritmo_seleccionado == "Ant Colony Optimization (ACO)":
+
+        # cargamos los hiperparámetros óptimos del estudio de calibración
+        PARAMS_ACO = {
+            **estudio_aco.best_params,
+            "n_hormigas": 20,
+            "max_iter": 200
+        }
+
         # hiperparámetros ACO
         st.sidebar.header("⚙️ Hiperparámetros ACO")
         
-        n_hormigas = st.sidebar.slider("Población (Hormigas)", 10, 200, 20, step=10)
-        max_iter = st.sidebar.slider("Iteraciones Máximas", 10, 2000, 200, step=10)
+        n_hormigas = st.sidebar.slider("Población (Hormigas)", 10, 200, PARAMS_ACO["n_hormigas"], step=10)
+        max_iter = st.sidebar.slider("Iteraciones Máximas", 10, 2000, PARAMS_ACO["max_iter"], step=10)
 
         st.sidebar.subheader("Ecuación de Transición")
-        alpha = st.sidebar.slider("Alfa (Importancia Feromona)", 0.0, 5.0, 1.15, step=0.05)
-        beta = st.sidebar.slider("Beta (Importancia Visibilidad)", 0.0, 5.0, 1.5, step=0.1)
-        omega = st.sidebar.number_input("Omega (Penalización Deadheading)", value=1113.17)
+        alpha = st.sidebar.slider("Alfa (Importancia Feromona)", 0.0, 5.0, PARAMS_ACO["alpha"], step=0.05)
+        beta = st.sidebar.slider("Beta (Importancia Visibilidad)", 0.0, 5.0, PARAMS_ACO["beta"], step=0.1)
+        omega = st.sidebar.number_input("Omega (Penalización Deadheading)", value=PARAMS_ACO["omega"])
         
         st.sidebar.subheader("Actualización Estigmérgica")
-        rho = st.sidebar.slider("Rho (Tasa Evaporación)", 0.01, 1.0, 0.05, step=0.01)
+        rho = st.sidebar.slider("Rho (Tasa Evaporación)", 0.01, 1.0, PARAMS_ACO["rho"], step=0.01)
         Q = st.sidebar.number_input("Q (Factor Depósito Elitista)", value=1.0)
 
         ejecutar_aco = st.sidebar.button("Ejecutar Colonia", type="primary")
@@ -287,11 +306,17 @@ def main():
                 # Forzamos una recarga limpia de la UI para renderizar los componentes de abajo
                 st.rerun()
     else:
+
+        PARAMS_TABU = {
+            **estudio_tabu.best_params,
+            "max_iter": 1000,
+        }
+
         st.sidebar.header("⚙️ Hiperparámetros Tabu Search")
-        max_iter_ts = st.sidebar.slider("Iteraciones Máximas", 50, 5000, 1000, step=50)
-        tamano_lista_tabu = st.sidebar.slider("Tamaño de Lista Tabú", 3, 50, 23, step=1)
-        cantidad_vecinos = st.sidebar.slider("Vecinos por Iteración", 5, 100, 41, step=5)
-        omega = st.sidebar.number_input("Omega (Penalización Deadheading)", 675.27)
+        max_iter_ts = st.sidebar.slider("Iteraciones Máximas", 50, 5000, PARAMS_TABU["max_iter"], step=50)
+        tamano_lista_tabu = st.sidebar.slider("Tamaño de Lista Tabú", 3, 50, PARAMS_TABU["tenencia_tabu"], step=1)
+        cantidad_vecinos = st.sidebar.slider("Vecinos por Iteración", 5, 100, PARAMS_TABU["t_vecindad"], step=5)
+        omega = st.sidebar.number_input("Omega (Penalización Deadheading)", value=PARAMS_TABU["omega"])
         
         ejecutar_ts = st.sidebar.button("Ejecutar Trayectoria", type="primary")
         
