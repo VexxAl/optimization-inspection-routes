@@ -1,6 +1,5 @@
 \documentclass[conference]{IEEEtran}
 \IEEEoverridecommandlockouts
-% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
 
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
@@ -42,11 +41,11 @@ ACO, CARP, Metaheurísticas, Inspección Autónoma, Búsqueda Tabú.
 \end{IEEEkeywords}
 
 \section{Introducción}
-El despliegue de robots autónomos para la inspección industrial ha cobrado una relevancia crítica en la gestión de entornos de difícil acceso. En particular, el vehículo autónomo de inspección ``Hykue'' requiere métodos de navegación inteligentes para maximizar la superficie de red de agua potable analizada. Dado que el proceso de sensado ocurre sobre las conexiones (tuberías) y no sobre las intersecciones, este escenario exige optimizar recorridos bajo un modelo de Problema de Enrutamiento de Arcos Capacitados (CARP). El desafío principal radica en lograr la máxima cobertura de inspección sin superar los límites estrictos de autonomía impuestos por las baterías del dispositivo, mitigando así el costoso proceso de recarga \textit{in situ}.
+El despliegue de robots autónomos para la inspección industrial ha cobrado una relevancia crítica en la gestión de entornos de difícil acceso. En particular, el vehículo autónomo de inspección ``Hykue'' requiere métodos de navegación inteligentes para maximizar la superficie de red de agua potable analizada. Dado que el proceso de sensado ocurre sobre las conexiones (tuberías) y no sobre las intersecciones, este escenario exige optimizar recorridos bajo un modelo de Problema de Enrutamiento de Arcos Capacitados (CARP) \cite{b2}. El desafío principal radica en lograr la máxima cobertura de inspección sin superar los límites estrictos de autonomía impuestos por las baterías del dispositivo, mitigando así el costoso proceso de recarga \textit{in situ}.
 
-Tradicionalmente, las variaciones de este modelo se han abordado mediante metodologías deterministas y heurísticas de trayectoria única, siendo la Búsqueda Tabú (TS) un exponente clásico para el CARP con movimientos continuos \cite{b1}. No obstante, estas implementaciones basadas en memoria a corto plazo presentan falencias severas en entornos topológicos de alta densidad. Al enfrentar asimetrías de red, los algoritmos de trayectoria única suelen forzar movimientos subóptimos para evadir ciclos locales. Esta limitación algorítmica deriva en un alto consumo energético por \textit{deadheading} (tránsito inactivo sin acción de sensado), agotando rápidamente la batería antes de lograr una exploración significativa del terreno.
+Tradicionalmente, las variaciones de este modelo se han abordado mediante metodologías deterministas y heurísticas de trayectoria única, siendo la Búsqueda Tabú (TS) un exponente clásico para este tipo de implementaciones \cite{b3}. No obstante, al basarse en memoria a corto plazo, presentan falencias severas en entornos topológicos de alta densidad. Al enfrentar asimetrías de red, los algoritmos de trayectoria única suelen forzar movimientos subóptimos para evadir ciclos locales. Esta limitación algorítmica deriva en un alto consumo energético por \textit{deadheading} (tránsito inactivo sin acción de sensado), agotando rápidamente la batería antes de lograr una exploración significativa del terreno.
 
-Frente a la necesidad de construir un mapeo global del entorno que evite penalizaciones inútiles, este trabajo propone la implementación de un algoritmo de Optimización por Colonia de Hormigas (ACO). La elección de esta metaheurística se fundamenta en la superioridad probada de los enfoques poblacionales para mapear rastros de feromonas directamente sobre grafos asimétricos. Nuestro aporte radica en una adaptación del ACO que emplea una memoria distributiva a largo plazo combinada con una matriz de visibilidad heurística penalizada, lo que permite a la colonia balancear la explotación con la exploración. Para garantizar la generalización del modelo, la propuesta incluye una fase de calibración de hiperparámetros basada en optimización bayesiana, previniendo sesgos de configuración y optimizando el comportamiento emergente del sistema \cite{b2}.
+Frente a la necesidad de construir un mapeo global del entorno que evite penalizaciones inútiles, este trabajo propone la implementación de un algoritmo de Optimización por Colonia de Hormigas (ACO) \cite{b4}. Cabe aclarar que, si bien nuestra investigación surge de una necesidad industrial específica y no está motivada conceptualmente por formulaciones previas de la literatura, el diseño esquemático del problema y las ecuaciones que rigen el modelo matemático adoptan los planteos desarrollados por Batista et al. \cite{b1}. Nuestro aporte radica en una adaptación de este ACO que emplea una memoria distributiva a largo plazo combinada con una matriz de visibilidad heurística penalizada, lo que permite a la colonia balancear la explotación con la exploración. Para garantizar la generalización del modelo, la propuesta incluye una fase de calibración de hiperparámetros basada en optimización bayesiana, previniendo sesgos de configuración y optimizando el comportamiento emergente del sistema \cite{b6}.
 
 El resto de este documento se estructura de la siguiente manera: la Sección II detalla la formulación matemática del problema, la penalización del costo inactivo y el diseño de la metaheurística propuesta. La Sección III describe el entorno de simulación, la calibración de hiperparámetros y expone los resultados de la evaluación comparativa del rendimiento. Finalmente, la Sección IV resume las principales conclusiones de la investigación.
 
@@ -78,7 +77,7 @@ Donde $\tau_{ij}$ representa la concentración de feromonas en el arco $(i,j)$; 
 El conjunto de nodos candidatos desde $i$, denotado como $\mathcal{N}_i$, se filtra para asegurar la viabilidad del movimiento y evitar retrocesos inmediatos (memoria tabú de un paso):
 
 \begin{equation}
-\mathcal{N}_i = \{j \in \text{Vecinos}(i) \mid \text{batería actual} \geq c_{ij} \text{ y } j \neq \text{nodo anterior}\}
+\mathcal{N}_i = \{j \in \text{Vecinos}(i) \mid B_{\text{actual}} \geq c_{ij} \text{ y } j \neq \text{nodo anterior}\}
 \end{equation}
 
 Por su parte, la visibilidad heurística $\eta_{ij}$ es clásicamente proporcional a la inversa del costo del arco ($1/c_{ij}$). Sin embargo, en nuestro entorno físico subyace una complejidad particular: el costo energético de simplemente trasladarse sin accionar los sensores (\textit{deadheading}) es estrictamente menor al costo de transitar inspeccionando. Matemáticamente, esto provoca que los arcos en situación de \textit{deadheading} posean un denominador menor y, en consecuencia, una visibilidad mayor. Esta situación generaría una paradoja perjudicial en la que el tránsito inactivo resultaría más ``atractivo'' para las hormigas que la exploración genuina de nuevas tuberías.
@@ -107,10 +106,10 @@ El aporte de feromona $\Delta\tau_{\text{best}}$ se calcula siempre en función 
 \subsection{Pseudocódigo del Algoritmo Propuesto (ACO)}
 Para sintetizar la dinámica poblacional del modelo diseñado, el flujo de ejecución principal se estructura de la siguiente manera:
 
-\vspace{0.2cm}
+\begin{figure}[htbp]
 \noindent\textbf{Algoritmo 1: ACO adaptado para CARP}
 \hrule
-\vspace{0.1cm}
+\vspace{0.2cm}
 \begin{algorithmic}[1]
 \STATE \textbf{Inicializar:} Grafo $G$, parámetros $(\alpha, \beta, \rho, \Omega, B_{\text{max}})$, y matriz de feromonas $\tau_{ij} = \tau_0$.
 \STATE Asignar $Z_{\text{best}} = \infty$ y $\text{Ruta}_{\text{best}} = \emptyset$.
@@ -138,6 +137,8 @@ Para sintetizar la dinámica poblacional del modelo diseñado, el flujo de ejecu
 \end{algorithmic}
 \vspace{0.1cm}
 \hrule
+\end{figure}
+
 \vspace{0.2cm}
 
 \subsection{Metaheurística Comparativa: Búsqueda Tabú Constructiva}
@@ -176,14 +177,14 @@ Con el objetivo de mitigar el sesgo topológico y evaluar la escalabilidad del s
 
 Para aislar la varianza inherente a la estocasticidad de ambas metaheurísticas, cada configuración fue sometida a un estudio empírico de $15$ ejecuciones independientes (corridas) por algoritmo y por instancia de red.
 
-\subsection{Calibración de Hiperparámetros (Optimización Bayesiana)}
+\subsection{Calibración de Hiperparámetros}
 El comportamiento de los sistemas de inteligencia colectiva es altamente sensible a sus hiperparámetros. Para garantizar una competencia justa y optimizar el rendimiento emergente, se aplicó un proceso de calibración mediante Optimización Bayesiana utilizando el framework Optuna. Específicamente, se empleó el muestreador TPE (Tree-structured Parzen Estimator), el cual modela probabilísticamente las regiones del espacio de búsqueda continuo y discreto que arrojan los mejores valores de $Z$.
 
-Tras el proceso de calibración cruzada sobre múltiples semillas aleatorias, el modelo bayesiano determinó un perfil donde el ACO requiere un equilibrio casi simétrico entre el peso del rastro estigmérgico y la visibilidad heurística, priorizando ligeramente la información de los sensores. La configuración extraída resultó en: $\alpha = 1.151$, $\beta = 1.499$, una tasa de evaporación baja $\rho = 0.053$ y una fuerte penalización dinámica $\Omega = 1113.17$.
+Tras el proceso de calibración cruzada sobre múltiples semillas aleatorias, el modelo bayesiano determinó un perfil donde el ACO requiere un equilibrio casi simétrico entre el peso del rastro estigmérgico y la visibilidad heurística, priorizando ligeramente la información de los sensores. La configuración extraída resultó en: $\alpha = 0.671$, $\beta = 2.015$, una tasa de evaporación baja $\rho = 0.115$ y una fuerte penalización dinámica $\Omega = 2933.42$.
 
 Cabe destacar que la exploración del espacio paramétrico reveló que esta configuración no es estrictamente única; se identificaron diversas combinaciones de hiperparámetros capaces de minimizar la función de ajuste con rendimientos equivalentes. No obstante, los valores mencionados fueron seleccionados formalmente como el perfil operativo de control para someter a la colonia a la experimentación de la Fase 2.
 
-Por su parte, la Búsqueda Tabú alcanzó su punto de máximo rendimiento con un tamaño de vecindad de $41$ nodos evaluados por iteración, una tenencia en la lista tabú de $23$ pasos y una penalización $\Omega = 675.27$.
+Por su parte, la Búsqueda Tabú alcanzó su punto de máximo rendimiento con un tamaño de vecindad de $30$ nodos evaluados por iteración, una tenencia en la lista tabú de $8$ pasos y una penalización $\Omega = 256.36$.
 
 % Coordenadas Paralelas (Optuna)
 \begin{figure}[htbp]
@@ -196,7 +197,7 @@ Por su parte, la Búsqueda Tabú alcanzó su punto de máximo rendimiento con un
 \subsection{Análisis Comparativo de Rendimiento y Robustez}
 Los resultados del despliegue en la simulación demostraron una superioridad contundente del enfoque poblacional. Evaluando la calidad global de la exploración, el ACO logró un Fitness Z mediano de $166.67$, superando a la Búsqueda Tabú que obtuvo un puntaje de $176.47$ en su mejor escenario.
 
-Para corroborar la validez estadística de estos hallazgos, se aplicó la prueba no paramétrica de Mann-Whitney U con un nivel de significancia $\alpha = 0.05$. El contraste de medianas entre las 15 ejecuciones independientes arrojó diferencias estadísticamente significativas a favor de ACO en los tres escenarios topológicos evaluados: en la red $5 \times 5$ ($p\text{-valor} = 1.69 \times 10^{-3}$), en la red $10 \times 10$ ($p\text{-valor} = 7.39 \times 10^{-7}$) y, de forma más crítica, en la red asimétrica ($p\text{-valor} = 2.14 \times 10^{-7}$).
+Para corroborar la validez estadística de estos hallazgos, se aplicó la prueba no paramétrica de Mann-Whitney U con un nivel de significancia $\alpha = 0.05$. El contraste de medianas entre las 15 ejecuciones independientes arrojó diferencias estadísticamente significativas a favor de ACO en los tres escenarios topológicos evaluados: en la red $5 \times 5$ ($p\text{-valor} = 3.98 \times 10^{-3}$), en la red $10 \times 10$ ($p\text{-valor} = 7.35 \times 10^{-5}$) y, de forma más crítica, en la red asimétrica ($p\text{-valor} = 3.21 \times 10^{-6}$).
 
 La dispersión de las métricas obtenidas no solo confirma que el modelo ACO encuentra soluciones más óptimas de manera global, sino que además presenta una varianza significativamente menor. Esta estrecha agrupación de resultados indica que la inteligencia de enjambre es computacionalmente más robusta y dependiente en menor medida de una semilla estocástica afortunada, logrando eludir los mínimos locales que frecuentemente corrompen las ejecuciones de trayectorias únicas.
 
@@ -249,10 +250,12 @@ Se concluye que la carencia de un mapeo de feromonas a largo plazo penaliza seve
 Como líneas de investigación futuras, se proyecta la consolidación de modelos que incorporen disipaciones estocásticas y no lineales de la batería. Asimismo, resulta de especial interés técnico el estudio de sensibilidad paramétrica sobre el propio hardware del vehículo; es decir, evaluar el impacto costo-beneficio de incrementar la capacidad de almacenamiento energético frente a las penalizaciones por el consecuente aumento de masa y fricción en la tubería.
 
 \begin{thebibliography}{00}
-\bibitem{b1} G. V. Batista, C. T. Scarpin, J. E. Pécora, y A. Ruiz, ``A New Ant Colony Optimization Algorithm to Solve the Periodic Capacitated Arc Routing Problem with Continuous Moves,'' \textit{Mathematical Problems in Engineering}, vol. 2019, 2019.
-\bibitem{b2} T. Akiba, S. Sano, T. Yanase, T. Ohta, y M. Koyama, ``Optuna: A Next-generation Hyperparameter Optimization Framework,'' en \textit{Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining}, 2019.
-\bibitem{b3} B. L. Golden y R. T. Wong, ``Capacitated arc routing problems,'' \textit{Networks}, vol. 11, pp. 305--315, 1981.
-\bibitem{b4} E.-G. Talbi, \textit{Metaheuristics: From Design to Implementation}, 1ra ed. Hoboken, NJ, USA: John Wiley \& Sons, 2009.
+\bibitem{b1} Batista, Guilherme V., Scarpin, Cassius T., Pécora, José E., Ruiz, Angel, A New Ant Colony Optimization Algorithm to Solve the Periodic Capacitated Arc Routing Problem with Continuous Moves, Mathematical Problems in Engineering, 2019, 3201656, 12 pages, 2019. https://doi.org/10.1155/2019/3201656
+\bibitem{b2} Golden, B.L. and Wong, R.T. (1981), Capacitated arc routing problems. Networks, 11: 305-315. https://doi.org/10.1002/net.3230110308
+\bibitem{b3} E.-G. Talbi, 'Single-Solution Based Metaheuristics' en \textit{Metaheuristics: From Design to Implementation}, 1ra ed. Hoboken, NJ, USA: John Wiley \& Sons, 2009, ch. 2, pp. 87--189. https://doi.org/10.1002/9780470496916.ch2
+\bibitem{b4} E.-G. Talbi, 'Population-Based Metaheuristics' en \textit{Metaheuristics: From Design to Implementation}, 1ra ed. Hoboken, NJ, USA: John Wiley \& Sons, 2009, ch. 3, pp. 190--307. https://doi.org/10.1002/9780470496916.ch3
+\bibitem{b5} E.-G. Talbi, 'Metaheuristics for Multiobjective Optimization' en \textit{Metaheuristics: From Design to Implementation}, 1ra ed. Hoboken, NJ, USA: John Wiley \& Sons, 2009, ch. 4, pp. 308--384. https://doi.org/10.1002/9780470496916.ch4
+\bibitem{b6} T. Akiba et al. 'Optuna: A Next-generation Hyperparameter Optimization Framework' en \textit{Proceedings of the 25th ACM SIGKDD International Conference on Knowledge Discovery \& Data Mining}, 2019, pp. 2623-2631, https://doi.org/10.48550/arXiv.1907.10902
 \end{thebibliography}
 
 \end{document}
